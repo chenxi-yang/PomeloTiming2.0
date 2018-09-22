@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">PomeloTiming</string>
+    <string name="edit_message">Enter a task</string>
+    <string name="button_send">Send</string>
+</resources>
