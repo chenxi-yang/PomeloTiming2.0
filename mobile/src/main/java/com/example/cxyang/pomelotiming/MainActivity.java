@@ -30,23 +30,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /** Called when the user taps the Send button */
-    public void sendMessage(View view){
+    public void onLogin(View view){
         //RequestQueue queue = Volley.newRequestQueue(this);
         RequestQueue queue = MySingleton.getInstance(this.getApplicationContext()).
                 getRequestQueue();
 
         EditText editText = (EditText) findViewById(R.id.editText);
-        String message = editText.getText().toString();
+        String username = editText.getText().toString();
+
+        EditText editText2 = (EditText) findViewById(R.id.editText2);
+        String passwd = editText2.getText().toString();
 
         JSONObject jsonObject = new JSONObject();
         try{
-            jsonObject.put("username", message);
+            jsonObject.put("username", username);
+            jsonObject.put("passwd", passwd);
         }catch (JSONException e1){
             e1.printStackTrace();
         }
         Log.e("post",jsonObject.toString());
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, SERVER_URL, jsonObject,
+        String loginString = SERVER_URL + "/login";
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, loginString, jsonObject,
                 new Response.Listener<JSONObject>(){
             @Override
             public void onResponse(JSONObject response) {
@@ -61,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
 
         Intent intent = new Intent(this, DisplayMessageActivity.class);
-        intent.putExtra(EXTRA_MESSAGE, message);
+        intent.putExtra(EXTRA_MESSAGE, username);
         startActivity(intent);
     }
 }
