@@ -19,6 +19,11 @@ import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.wearable.DataClient;
+import com.google.android.gms.wearable.DataItem;
+import com.google.android.gms.wearable.PutDataMapRequest;
+import com.google.android.gms.wearable.PutDataRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,10 +32,22 @@ import java.util.HashMap;
 
 
 public class MainActivity extends AppCompatActivity {
-    String localHost = "http://10.222.254.12:80";
-    String serverHost = "http://45.32.5.192:80";
+    public static final String localHost = "http://10.222.254.12:80";
+    public static final String serverHost = "http://45.32.5.192:80";
     public static final String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
-    public static final String SERVER_URL = "http://10.222.254.12:80";
+    public static final String SERVER_URL = localHost;
+
+    private static final String COUNT_KEY = "com.example.key.count";
+    private DataClient mDataClient;
+    private int count = 0;
+
+    // Create a data map and put data in it
+    private void increaseCounter() {
+        PutDataMapRequest putDataMapReq = PutDataMapRequest.create("/data-item-received");
+        putDataMapReq.getDataMap().putInt(COUNT_KEY, count++);
+        PutDataRequest putDataReq = putDataMapReq.asPutDataRequest();
+        Task<DataItem> putDataTask = mDataClient.putDataItem(putDataReq);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
