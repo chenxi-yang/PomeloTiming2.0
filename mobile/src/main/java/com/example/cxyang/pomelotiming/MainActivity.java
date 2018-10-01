@@ -32,14 +32,17 @@ import java.util.HashMap;
 
 
 public class MainActivity extends AppCompatActivity {
-    public static final String localHost = "http://10.222.254.12:80";
+    public static final String localHost = "http://192.168.1.102:80";
     public static final String serverHost = "http://45.32.5.192:80";
     public static final String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
     public static final String SERVER_URL = localHost;
 
+    public static int USERID;
+
     private static final String COUNT_KEY = "com.example.key.count";
     private DataClient mDataClient;
     private int count = 0;
+
 
     // Create a data map and put data in it
     private void increaseCounter() {
@@ -64,11 +67,11 @@ public class MainActivity extends AppCompatActivity {
         String username = editText.getText().toString();
 
         EditText editText2 = (EditText) findViewById(R.id.editText2);
-        String passwd = editText2.getText().toString();
+        String password = editText2.getText().toString();
 
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("username", username);
-        params.put("passwd", passwd);
+        params.put("password", password);
 
         Log.e("post", params.toString());
 
@@ -78,7 +81,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(JSONObject response) {
                 Log.e("normalResponse", response.toString());
-                System.out.print(response.toString());
+
+                try{
+                    USERID = response.getInt("user_id");
+                    if (USERID == -1){
+                        // TODO: handle wrongpass word
+                    }else{
+                        // TODO: enter this user's homepage
+                    }
+                }catch(JSONException e){
+                    //some exception handler code.
+                }
+                // System.out.print(response.toString());
             }
             }, new Response.ErrorListener(){
             @Override
@@ -89,8 +103,10 @@ public class MainActivity extends AppCompatActivity {
         MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
         //queue.add(jsonObjectRequest);
 
+        /*
         Intent intent = new Intent(this, DisplayMessageActivity.class);
         intent.putExtra(EXTRA_MESSAGE, username);
         startActivity(intent);
+        */
     }
 }
