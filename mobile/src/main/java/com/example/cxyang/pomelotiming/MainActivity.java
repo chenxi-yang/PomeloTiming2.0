@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String localHost = "http://192.168.1.102:80";
     public static final String serverHost = "http://45.32.5.192:80";
     public static final String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
-    public static final String SERVER_URL = localHost;
+    public static final String SERVER_URL = serverHost;
 
     public static int USERID;
 
@@ -103,10 +103,8 @@ public class MainActivity extends AppCompatActivity {
         MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
         //queue.add(jsonObjectRequest);
 
-        /*
         Intent intent = new Intent(this, DisplayMessageActivity.class);
         intent.putExtra(EXTRA_MESSAGE, username);
         startActivity(intent);
-        */
     }
 }
