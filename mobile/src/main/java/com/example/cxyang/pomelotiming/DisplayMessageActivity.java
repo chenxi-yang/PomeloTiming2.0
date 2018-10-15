@@ -42,10 +42,8 @@ public class DisplayMessageActivity extends AppCompatActivity implements View.On
 
     //public static final String localHost = "http://localhost:80";
     public static final String serverHost = "http://45.32.5.192:80";
-    public static final String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
     public static final String SERVER_URL = serverHost;
 
-    private static final String COUNT_KEY = "com.example.key.count";
     private String userid;
 
     @Override

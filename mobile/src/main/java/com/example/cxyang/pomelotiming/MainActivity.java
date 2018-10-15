@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
         MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
         //queue.add(jsonObjectRequest);
 
-        Intent intent = new Intent(this, DisplayMessageActivity.class);
+        Intent intent = new Intent(this, FragmentActivity.class);
         intent.putExtra(EXTRA_MESSAGE, username);
         startActivity(intent);
     }
