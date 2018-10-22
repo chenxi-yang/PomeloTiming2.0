@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.view.ViewPager;
 
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -59,6 +60,7 @@ public class DisplayMessageActivity extends AppCompatActivity implements View.On
     private CalendarViewAdapter calendarAdapter;
     private OnSelectDateListener onSelectDateListener;
     private int mCurrentPage = MonthPager.CURRENT_DAY_INDEX;
+    private RecycleAdapter adapter;
     private Context context;
     private CalendarDate currentDate;
     private boolean initiated = false;
@@ -87,17 +89,27 @@ public class DisplayMessageActivity extends AppCompatActivity implements View.On
         tvYear = (TextView) findViewById(R.id.show_year_view);
         tvMonth = (TextView) findViewById(R.id.show_month_view);
         backToday = (TextView) findViewById(R.id.back_today_button);
-        //scrollSwitch = (TextView) findViewById(R.id.scroll_switch);
-        //nextMonthBtn = (TextView) findViewById(R.id.next_month);
-        //lastMonthBtn = (TextView) findViewById(R.id.last_month);
+
+
+        initCurrentDate();
+        List<String> nameList = InitData();
+
         rvToDoList = (RecyclerView) findViewById(R.id.list);
         rvToDoList.setHasFixedSize(true);
         //这里用线性显示 类似于listview
         rvToDoList.setLayoutManager(new LinearLayoutManager(this));
-        rvToDoList.setAdapter(new ExampleAdapter(this));
-        initCurrentDate();
+        adapter = new RecycleAdapter(this, nameList);
+        rvToDoList.setAdapter(adapter);
+        rvToDoList.setItemAnimator(new DefaultItemAnimator());
+
         initCalendarView();
         initToolbarClickListener();
+    }
+    private ArrayList<String> InitData() {
+        ArrayList<String> mDatas = new ArrayList<String>();
+        mDatas.add("Current Date: " + currentDate.toString());
+
+        return mDatas;
     }
     public void onClick(View v)
     {
@@ -219,30 +231,6 @@ public class DisplayMessageActivity extends AppCompatActivity implements View.On
                 onClickBackToDayBtn();
             }
         });
-     /*   scrollSwitch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (calendarAdapter.getCalendarType() == CalendarAttr.CalendarType.WEEK) {
-                    Utils.scrollTo(content, rvToDoList, monthPager.getViewHeight(), 200);
-                    calendarAdapter.switchToMonth();
-                } else {
-                    Utils.scrollTo(content, rvToDoList, monthPager.getCellHeight(), 200);
-                    calendarAdapter.switchToWeek(monthPager.getRowIndex());
-                }
-            }
-        });
-        nextMonthBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                monthPager.setCurrentItem(monthPager.getCurrentPosition() + 1);
-            }
-        });
-        lastMonthBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                monthPager.setCurrentItem(monthPager.getCurrentPosition() - 1);
-            }
-        });*/
     }
 
     /**
@@ -313,6 +301,10 @@ public class DisplayMessageActivity extends AppCompatActivity implements View.On
         currentDate = date;
         tvYear.setText(date.getYear() + "年");
         tvMonth.setText(date.getMonth() + "");
+
+        ArrayList<String> namelist = new ArrayList<String>();
+        namelist.add("Current Date: " + currentDate.toString());
+        adapter.ChangeData(namelist);
     }
 
     /**

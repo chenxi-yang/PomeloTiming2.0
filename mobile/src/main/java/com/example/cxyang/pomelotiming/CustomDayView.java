@@ -18,7 +18,7 @@ import com.ldf.calendar.view.DayView;
  */
 
 @SuppressLint("ViewConstructor")
-public class CustomDayView extends DayView {
+public class  CustomDayView extends DayView {
 
     private TextView dateTv;
     private ImageView marker;

@@ -115,7 +115,7 @@
                 android:id="@+id/list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#ffffff"
+                android:background="#efefef"
                 app:layout_behavior="com.ldf.calendar.behavior.RecyclerViewBehavior"
                 android:layout_gravity="bottom"
                 android:clipToPadding="false"
