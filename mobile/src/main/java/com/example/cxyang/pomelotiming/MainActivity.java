@@ -24,6 +24,11 @@ import com.google.android.gms.wearable.DataClient;
 import com.google.android.gms.wearable.DataItem;
 import com.google.android.gms.wearable.PutDataMapRequest;
 import com.google.android.gms.wearable.PutDataRequest;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
     private DataClient mDataClient;
     private int count = 0;
 
+    private SQLiteDatabase db;
+
 
     // Create a data map and put data in it
     private void increaseCounter() {
@@ -55,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        db = SQLiteDatabase.openOrCreateDatabase(getFilesDir().getPath() + "/my_db.db", null);
     }
 
     /** Called when the user taps the Send button */
