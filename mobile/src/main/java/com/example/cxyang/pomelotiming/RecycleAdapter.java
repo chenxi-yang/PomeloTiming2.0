@@ -17,11 +17,13 @@ import java.util.List;
 
 class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.MyViewHolder> {
     private Context context;
-    private List<String> list;
+    private List<Plan> list;
+    private DataBaseServer db;
 
-    public RecycleAdapter(Context context, List<String> list) {
+    public RecycleAdapter(Context context, List<Plan> list, DataBaseServer db) {
         this.context = context;
         this.list = list;
+        this.db = db;
     }
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -32,17 +34,11 @@ class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.MyViewHolder> {
     }
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
-        holder.tv.setText(list.get(position));
+        String txt = list.get(position).get_name() + "( Start With: " + list.get(position).get_start_time() + ")";
+        holder.tv.setText(txt);
         holder.tv_delete.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                if (list.size() == 1) {
-                    Snackbar.make(v, "此条目不能删除", Snackbar.LENGTH_SHORT).show();
-                } else {
-                    //               删除自带默认动画
-                    removeData(position);
-                }
-            }
+            public void onClick(View v) { removeData(position); }
         });
     }
     @Override
@@ -50,7 +46,7 @@ class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.MyViewHolder> {
         return list.size();
     }
     //  更新数据
-    public void ChangeData(List<String> newlist) {
+    public void ChangeData(List<Plan> newlist) {
 //      在list中添加数据，并通知条目加入一条
         list.clear();
         for (int i = 0; i < newlist.size(); i ++)
@@ -60,8 +56,9 @@ class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.MyViewHolder> {
     }
     //  删除数据
     public void removeData(int position) {
+        db.DeletePlan(list.get(position));
+
         list.remove(position);
-        //删除动画
         notifyItemRemoved(position);
         notifyDataSetChanged();
     }
