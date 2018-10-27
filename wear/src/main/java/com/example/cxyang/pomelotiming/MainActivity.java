@@ -17,7 +17,8 @@ public class MainActivity extends WearableActivity{
     private static final String COUNT_KEY = "com.example.key.count";
     private int count = 0;
 
-    private TextView mTextView;
+    public TextView mTextView;
+    public TextView mTaskState;
     /*
     @Override
     protected void onResume() {
@@ -36,9 +37,11 @@ public class MainActivity extends WearableActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        //setContentView(R.layout.activity_main);
+        setContentView(R.layout.state_show);
 
-        mTextView = (TextView) findViewById(R.id.text);
+        //mTextView = (TextView) findViewById(R.id.text);
+        mTaskState = (TextView) findViewById(R.id.taskState);
 
         // Enables Always-on
         setAmbientEnabled();
