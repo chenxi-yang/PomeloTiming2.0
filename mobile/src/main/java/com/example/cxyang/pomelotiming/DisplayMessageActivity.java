@@ -166,7 +166,7 @@ public class DisplayMessageActivity extends AppCompatActivity implements View.On
                                 String st_startTime = getTime(start_date.getText().toString(), start_time.getText().toString());
                                 String st_endTime = getTime(end_date.getText().toString(), end_time.getText().toString());
 
-                                /*HashMap<String, String> params = new HashMap<String, String>();
+                                HashMap<String, String> params = new HashMap<String, String>();
                                 params.put("start_time", st_startTime);
                                 params.put("end_time", st_endTime);
                                 params.put("plan_name", st_planName);
@@ -188,8 +188,8 @@ public class DisplayMessageActivity extends AppCompatActivity implements View.On
                                     }
                                 });
                                 MySingleton.getInstance(DisplayMessageActivity.this).addToRequestQueue(jsonObjectRequest);
-                                */
-                                Plan newplan = new Plan(start_date.getText().toString(), st_startTime, st_endTime, st_planName);
+
+                                Plan newplan = new Plan(start_date.getText().toString(), start_time.getText().toString(), end_time.getText().toString(), st_planName);
 
                                 db.AddPlan(newplan);
                                 List<Plan> namelist = db.getPlanListByDay(currentDate);

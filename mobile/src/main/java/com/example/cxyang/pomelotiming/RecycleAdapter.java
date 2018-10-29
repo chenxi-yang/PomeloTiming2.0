@@ -34,8 +34,10 @@ class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.MyViewHolder> {
     }
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
-        String txt = list.get(position).get_name() + "( Start With: " + list.get(position).get_start_time() + ")";
+        String txt = list.get(position).get_name();
         holder.tv.setText(txt);
+        String time_txt = "Duration: " + list.get(position).get_start_time() + " ~ " + list.get(position).get_end_time();
+        holder.tv_duration.setText(time_txt);
         holder.tv_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { removeData(position); }
@@ -66,11 +68,12 @@ class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.MyViewHolder> {
      * ViewHolder的类，用于缓存控件
      */
     class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView tv, tv_delete;
+        TextView tv, tv_delete, tv_duration;
         //因为删除有可能会删除中间条目，然后会造成角标越界，所以必须整体刷新一下！
         public MyViewHolder(View view) {
             super(view);
             tv = (TextView) view.findViewById(R.id.id_num);
+            tv_duration = (TextView) view.findViewById(R.id.id_duration);
             tv_delete = (TextView) view.findViewById(R.id.tv_delete);
         }
     }
