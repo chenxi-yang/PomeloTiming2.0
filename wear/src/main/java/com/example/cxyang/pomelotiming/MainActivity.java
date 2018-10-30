@@ -1,7 +1,12 @@
 package com.example.cxyang.pomelotiming;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.nfc.cardemulation.CardEmulation;
 import android.os.Bundle;
 import android.support.wearable.activity.WearableActivity;
+import android.support.wearable.view.CardFragment;
+import android.support.wearable.view.CardFrame;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -18,6 +23,7 @@ public class MainActivity extends WearableActivity{
     private int count = 0;
 
     public TextView mTextView;
+    public TextView mTaskStateName;
     public TextView mTaskState;
     /*
     @Override
@@ -36,31 +42,19 @@ public class MainActivity extends WearableActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_main);
-        setContentView(R.layout.state_show);
 
-        //mTextView = (TextView) findViewById(R.id.text);
-        mTaskState = (TextView) findViewById(R.id.taskState);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.fragment_frame);
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
+        CardFragment cardFragment = CardFragment.create("title",  "description", R.layout.fragment_frame);
+//        fragmentTransaction.add(R.id.frame_layout, cardFragment);
+//        fragmentTransaction.commit();
+
+        mTaskStateName = (TextView) findViewById(R.id.stateTitle);
+        mTaskState = (TextView) findViewById(R.id.state);
 
         // Enables Always-on
         setAmbientEnabled();
     }
-    /*
-    @Override
-    public void onDataChanged(DataEventBuffer dataEvents) {
-        for (DataEvent event : dataEvents) {
-            if (event.getType() == DataEvent.TYPE_CHANGED) {
-                // DataItem changed
-                DataItem item = event.getDataItem();
-                if (item.getUri().getPath().compareTo("/count") == 0) {
-                    DataMap dataMap = DataMapItem.fromDataItem(item).getDataMap();
-                    updateCount(dataMap.getInt(COUNT_KEY));
-                }
-            } else if (event.getType() == DataEvent.TYPE_DELETED) {
-                // DataItem deleted
-            }
-        }
-    }
-    */
 }
