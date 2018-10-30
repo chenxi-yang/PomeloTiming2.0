@@ -110,7 +110,7 @@ public final class Utils {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             date = sdf.parse(dateString);
         } catch (ParseException e) {
-            System.out.println(e.getMessage());
+            //System.out.println(e.getMessage());
         }
         return date;
     }
@@ -223,7 +223,7 @@ public final class Utils {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-M-d");
             date = sdf.parse(dateString);
         } catch (ParseException e) {
-            System.out.println(e.getMessage());
+        //    System.out.println(e.getMessage());
         }
         c.setTime(date);
         if (c.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
@@ -248,7 +248,7 @@ public final class Utils {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-M-d");
             date = sdf.parse(dateString);
         } catch (ParseException e) {
-            System.out.println(e.getMessage());
+  //          System.out.println(e.getMessage());
         }
         c.setTime(date);
         c.add(Calendar.DAY_OF_MONTH, 7 - c.get(Calendar.DAY_OF_WEEK));

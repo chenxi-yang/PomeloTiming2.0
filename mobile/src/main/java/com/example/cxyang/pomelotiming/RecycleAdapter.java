@@ -17,11 +17,13 @@ import java.util.List;
 
 class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.MyViewHolder> {
     private Context context;
-    private List<String> list;
+    private List<Plan> list;
+    private DataBaseServer db;
 
-    public RecycleAdapter(Context context, List<String> list) {
+    public RecycleAdapter(Context context, List<Plan> list, DataBaseServer db) {
         this.context = context;
         this.list = list;
+        this.db = db;
     }
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -32,17 +34,13 @@ class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.MyViewHolder> {
     }
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
-        holder.tv.setText(list.get(position));
+        String txt = list.get(position).get_name();
+        holder.tv.setText(txt);
+        String time_txt = "Duration: " + list.get(position).get_start_time() + " ~ " + list.get(position).get_end_time();
+        holder.tv_duration.setText(time_txt);
         holder.tv_delete.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                if (list.size() == 1) {
-                    Snackbar.make(v, "此条目不能删除", Snackbar.LENGTH_SHORT).show();
-                } else {
-                    //               删除自带默认动画
-                    removeData(position);
-                }
-            }
+            public void onClick(View v) { removeData(position); }
         });
     }
     @Override
@@ -50,7 +48,7 @@ class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.MyViewHolder> {
         return list.size();
     }
     //  更新数据
-    public void ChangeData(List<String> newlist) {
+    public void ChangeData(List<Plan> newlist) {
 //      在list中添加数据，并通知条目加入一条
         list.clear();
         for (int i = 0; i < newlist.size(); i ++)
@@ -60,8 +58,9 @@ class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.MyViewHolder> {
     }
     //  删除数据
     public void removeData(int position) {
+        db.DeletePlan(list.get(position));
+
         list.remove(position);
-        //删除动画
         notifyItemRemoved(position);
         notifyDataSetChanged();
     }
@@ -69,11 +68,12 @@ class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.MyViewHolder> {
      * ViewHolder的类，用于缓存控件
      */
     class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView tv, tv_delete;
+        TextView tv, tv_delete, tv_duration;
         //因为删除有可能会删除中间条目，然后会造成角标越界，所以必须整体刷新一下！
         public MyViewHolder(View view) {
             super(view);
             tv = (TextView) view.findViewById(R.id.id_num);
+            tv_duration = (TextView) view.findViewById(R.id.id_duration);
             tv_delete = (TextView) view.findViewById(R.id.tv_delete);
         }
     }

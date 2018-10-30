@@ -52,9 +52,7 @@ public class DisplayMessageActivity extends AppCompatActivity implements View.On
     CoordinatorLayout content;
     MonthPager monthPager;
     RecyclerView rvToDoList;
-    TextView scrollSwitch;
-    TextView nextMonthBtn;
-    TextView lastMonthBtn;
+
 
     private ArrayList<Calendar> currentCalendars = new ArrayList<>();
     private CalendarViewAdapter calendarAdapter;
@@ -62,6 +60,7 @@ public class DisplayMessageActivity extends AppCompatActivity implements View.On
     private int mCurrentPage = MonthPager.CURRENT_DAY_INDEX;
     private RecycleAdapter adapter;
     private Context context;
+    private DataBaseServer db;
     private CalendarDate currentDate;
     private boolean initiated = false;
 
@@ -82,31 +81,32 @@ public class DisplayMessageActivity extends AppCompatActivity implements View.On
         button.setOnClickListener(this);
 
         context = this;
-        content = (CoordinatorLayout) findViewById(R.id.content);
-        monthPager = (MonthPager) findViewById(R.id.calendar_view);
+        content = findViewById(R.id.content);
+        monthPager = findViewById(R.id.calendar_view);
         //此处强行setViewHeight，毕竟你知道你的日历牌的高度
         monthPager.setViewHeight(Utils.dpi2px(context, 270));
-        tvYear = (TextView) findViewById(R.id.show_year_view);
-        tvMonth = (TextView) findViewById(R.id.show_month_view);
-        backToday = (TextView) findViewById(R.id.back_today_button);
+        tvYear = findViewById(R.id.show_year_view);
+        tvMonth = findViewById(R.id.show_month_view);
+        backToday = findViewById(R.id.back_today_button);
 
 
+        db = new DataBaseServer(this, "plan.db");
         initCurrentDate();
-        List<String> nameList = InitData();
+        List<Plan> nameList = db.getPlanListByDay(currentDate);
 
-        rvToDoList = (RecyclerView) findViewById(R.id.list);
+        rvToDoList = findViewById(R.id.list);
         rvToDoList.setHasFixedSize(true);
         //这里用线性显示 类似于listview
         rvToDoList.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new RecycleAdapter(this, nameList);
+        adapter = new RecycleAdapter(this, nameList, db);
         rvToDoList.setAdapter(adapter);
         rvToDoList.setItemAnimator(new DefaultItemAnimator());
 
         initCalendarView();
         initToolbarClickListener();
     }
-    private ArrayList<String> InitData() {
-        ArrayList<String> mDatas = new ArrayList<String>();
+    private List<String> InitData() {
+        List<String> mDatas = new ArrayList<String>();
         mDatas.add("Current Date: " + currentDate.toString());
 
         return mDatas;
@@ -115,6 +115,7 @@ public class DisplayMessageActivity extends AppCompatActivity implements View.On
     {
         LayoutInflater factory = LayoutInflater.from(this);
         final View textEntryView = factory.inflate(R.layout.layoutdialog, null);
+
         AlertDialog dlg = new AlertDialog.Builder(this)
                 .setTitle("New Plan")
                 .setView(textEntryView)
@@ -153,16 +154,17 @@ public class DisplayMessageActivity extends AppCompatActivity implements View.On
 
                             public void onClick(DialogInterface dialog, int whichButton) {
 
-                                String st_planName = textEntryView.findViewById(R.id.text_planname).toString();
+                                System.out.println(111);
+
+                                String st_planName = ((EditText) textEntryView.findViewById(R.id.text_planname)).getText().toString();
 
                                 EditText start_date = textEntryView.findViewById(R.id.startdate);
                                 EditText end_date = textEntryView.findViewById(R.id.enddate);
                                 EditText start_time = textEntryView.findViewById(R.id.starttime);
                                 EditText end_time = textEntryView.findViewById(R.id.endtime);
 
-                                String st_startTime = getTime(start_date.toString(), start_time.toString());
-                                String st_endTime = getTime(end_date.toString(), end_time.toString());
-
+                                String st_startTime = getTime(start_date.getText().toString(), start_time.getText().toString());
+                                String st_endTime = getTime(end_date.getText().toString(), end_time.getText().toString());
 
                                 HashMap<String, String> params = new HashMap<String, String>();
                                 params.put("start_time", st_startTime);
@@ -186,8 +188,13 @@ public class DisplayMessageActivity extends AppCompatActivity implements View.On
                                     }
                                 });
                                 MySingleton.getInstance(DisplayMessageActivity.this).addToRequestQueue(jsonObjectRequest);
-                                //System.out.println(st_startTime);
-                                //System.out.println(st_endTime);
+
+                                Plan newplan = new Plan(start_date.getText().toString(), start_time.getText().toString(), end_time.getText().toString(), st_planName);
+
+                                db.AddPlan(newplan);
+                                List<Plan> namelist = db.getPlanListByDay(currentDate);
+
+                                adapter.ChangeData(namelist);
                             }
                         })
                 .setNegativeButton("Cancel",
@@ -302,8 +309,7 @@ public class DisplayMessageActivity extends AppCompatActivity implements View.On
         tvYear.setText(date.getYear() + "年");
         tvMonth.setText(date.getMonth() + "");
 
-        ArrayList<String> namelist = new ArrayList<String>();
-        namelist.add("Current Date: " + currentDate.toString());
+        List<Plan> namelist = db.getPlanListByDay(currentDate);
         adapter.ChangeData(namelist);
     }
 

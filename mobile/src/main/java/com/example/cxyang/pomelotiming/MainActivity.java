@@ -1,7 +1,6 @@
 package com.example.cxyang.pomelotiming;
 
 import android.content.Intent;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,77 +19,57 @@ import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.wearable.DataApi;
 import com.google.android.gms.wearable.DataClient;
-import com.google.android.gms.wearable.DataEventBuffer;
 import com.google.android.gms.wearable.DataItem;
-import com.google.android.gms.wearable.MessageApi;
-import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.PutDataMapRequest;
 import com.google.android.gms.wearable.PutDataRequest;
-import com.google.android.gms.wearable.Wearable;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 
-import static android.util.Config.LOGD;
 
-
-public abstract class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, DataApi.DataListener, MessageApi.MessageListener {
+public class MainActivity extends AppCompatActivity {
     public static final String serverHost = "http://45.32.5.192:80";
     public static final String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
     public static final String SERVER_URL = serverHost;
-    private static final String TAG = "MainActivity";
 
     public static int USERID;
 
     private static final String COUNT_KEY = "com.example.key.count";
     private DataClient mDataClient;
     private int count = 0;
-    private GoogleApiClient mGoogleApiClient;
-    Handler mHandler = new Handler();
+
+    private SQLiteDatabase db;
+
+
+    // Create a data map and put data in it
+    private void increaseCounter() {
+        PutDataMapRequest putDataMapReq = PutDataMapRequest.create("/data-item-received");
+        putDataMapReq.getDataMap().putInt(COUNT_KEY, count++);
+        PutDataRequest putDataReq = putDataMapReq.asPutDataRequest();
+        Task<DataItem> putDataTask = mDataClient.putDataItem(putDataReq);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addApi(Wearable.API)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .build();
-
         setContentView(R.layout.activity_main);
+
+        db = SQLiteDatabase.openOrCreateDatabase(getFilesDir().getPath() + "/my_db.db", null);
     }
 
-    @Override
-    public void onConnected(Bundle connectionHint) {
-        // We are now connected!
-        LOGD(TAG, "Google API Client was connected");
-        Wearable.DataApi.addListener(mGoogleApiClient, this);
-        Wearable.MessageApi.addListener(mGoogleApiClient, this);
-    }
-
-    protected abstract void LOGD(String tag, String google_api_client_was_connected);
-
-    @Override
-    public void onConnectionSuspended(int cause) {
-        // We are not connected anymore!
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult result) {
-        // We tried to connect but failed!
-    }
-
-
-    /** Called when the user taps the Send button */
-    public void onLogin(View view){
+    /**
+     * Called when the user taps the Send button
+     */
+    public void onLogin(View view) {
         //RequestQueue queue = Volley.newRequestQueue(this);
         RequestQueue queue = MySingleton.getInstance(this.getApplicationContext()).getRequestQueue();
 
@@ -108,26 +87,26 @@ public abstract class MainActivity extends AppCompatActivity implements GoogleAp
 
         String loginString = SERVER_URL + "/login";
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, loginString, new JSONObject(params),
-                new Response.Listener<JSONObject>(){
-            @Override
-            public void onResponse(JSONObject response) {
-                Log.e("normalResponse", response.toString());
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.e("normalResponse", response.toString());
 
-                try{
-                    USERID = response.getInt("user_id");
-                    if (USERID == -1){
-                        // TODO: handle wrongpass word
-                    }else{
-                        // TODO: enter this user's homepage
+                        try {
+                            USERID = response.getInt("user_id");
+                            if (USERID == -1) {
+                                // TODO: handle wrongpass word
+                            } else {
+                                // TODO: enter this user's homepage
+                            }
+                        } catch (JSONException e) {
+                            //some exception handler code.
+                        }
+                        // System.out.print(response.toString());
                     }
-                }catch(JSONException e){
-                    //some exception handler code.
-                }
-                // System.out.print(response.toString());
-            }
-            }, new Response.ErrorListener(){
+                }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError arg0){
+            public void onErrorResponse(VolleyError arg0) {
                 Log.e("errorResponse", arg0.toString());
             }
         });
@@ -137,15 +116,5 @@ public abstract class MainActivity extends AppCompatActivity implements GoogleAp
         Intent intent = new Intent(this, DisplayMessageActivity.class);
         intent.putExtra(EXTRA_MESSAGE, username);
         startActivity(intent);
-    }
-
-    @Override
-    public void onDataChanged(DataEventBuffer dataEventBuffer) {
-
-    }
-
-    @Override
-    public void onMessageReceived(MessageEvent messageEvent) {
-
     }
 }
