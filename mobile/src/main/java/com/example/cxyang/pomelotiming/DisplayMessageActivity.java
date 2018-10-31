@@ -1,6 +1,12 @@
 package com.example.cxyang.pomelotiming;
 
+import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.IntentFilter;
+import android.os.Build;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,6 +25,7 @@ import android.widget.EditText;
 
 import android.widget.TextView;
 import android.view.View;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -64,6 +71,8 @@ public class DisplayMessageActivity extends AppCompatActivity implements View.On
     private CalendarDate currentDate;
     private boolean initiated = false;
 
+    private AlarmManager alarmManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,7 +105,7 @@ public class DisplayMessageActivity extends AppCompatActivity implements View.On
 
         rvToDoList = findViewById(R.id.list);
         rvToDoList.setHasFixedSize(true);
-        //这里用线性显示 类似于listview
+
         rvToDoList.setLayoutManager(new LinearLayoutManager(this));
         adapter = new RecycleAdapter(this, nameList, db);
         rvToDoList.setAdapter(adapter);
@@ -104,6 +113,8 @@ public class DisplayMessageActivity extends AppCompatActivity implements View.On
 
         initCalendarView();
         initToolbarClickListener();
+
+        alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
     }
     private List<String> InitData() {
         List<String> mDatas = new ArrayList<String>();
@@ -151,10 +162,33 @@ public class DisplayMessageActivity extends AppCompatActivity implements View.On
                                 }
                                 return ret;
                             }
+                            private void setAlarmClock(String time) {
+                                Intent intent = new Intent(DisplayMessageActivity.this, AlarmActivity.class);
 
+                                java.util.Calendar calendar = java.util.Calendar.getInstance();
+                                calendar.setTimeInMillis(System.currentTimeMillis());
+
+                                java.util.Calendar alarm_time = java.util.Calendar.getInstance();
+
+                                int year = Integer.parseInt(time.substring(0, 4));
+                                int month = Integer.parseInt(time.substring(4, 6));
+                                int day = Integer.parseInt(time.substring(6, 8));
+                                int hour = Integer.parseInt(time.substring(8, 10));
+                                int minute = Integer.parseInt(time.substring(10, 12));
+
+                                alarm_time.set(year, month - 1, day, hour, minute);
+
+                                AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+                                PendingIntent pi = PendingIntent.getBroadcast(context, 0, intent, 0);
+
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+                                    am.setExact(AlarmManager.RTC_WAKEUP, alarm_time.getTimeInMillis(), pi);
+                                else
+                                    am.set(AlarmManager.RTC_WAKEUP, alarm_time.getTimeInMillis(), pi);
+
+                            }
+                            
                             public void onClick(DialogInterface dialog, int whichButton) {
-
-                                System.out.println(111);
 
                                 String st_planName = ((EditText) textEntryView.findViewById(R.id.text_planname)).getText().toString();
 
@@ -166,7 +200,7 @@ public class DisplayMessageActivity extends AppCompatActivity implements View.On
                                 String st_startTime = getTime(start_date.getText().toString(), start_time.getText().toString());
                                 String st_endTime = getTime(end_date.getText().toString(), end_time.getText().toString());
 
-                                HashMap<String, String> params = new HashMap<String, String>();
+        /*                        HashMap<String, String> params = new HashMap<String, String>();
                                 params.put("start_time", st_startTime);
                                 params.put("end_time", st_endTime);
                                 params.put("plan_name", st_planName);
@@ -187,7 +221,7 @@ public class DisplayMessageActivity extends AppCompatActivity implements View.On
                                         Log.e("errorResponse", arg0.toString());
                                     }
                                 });
-                                MySingleton.getInstance(DisplayMessageActivity.this).addToRequestQueue(jsonObjectRequest);
+                                MySingleton.getInstance(DisplayMessageActivity.this).addToRequestQueue(jsonObjectRequest);*/
 
                                 Plan newplan = new Plan(start_date.getText().toString(), start_time.getText().toString(), end_time.getText().toString(), st_planName);
 
@@ -195,6 +229,7 @@ public class DisplayMessageActivity extends AppCompatActivity implements View.On
                                 List<Plan> namelist = db.getPlanListByDay(currentDate);
 
                                 adapter.ChangeData(namelist);
+                                setAlarmClock(st_startTime);
                             }
                         })
                 .setNegativeButton("Cancel",
@@ -222,6 +257,8 @@ public class DisplayMessageActivity extends AppCompatActivity implements View.On
 
     @Override
     protected void onResume() {
+        Utils.scrollTo(content, rvToDoList, monthPager.getCellHeight(), 200);
+        calendarAdapter.switchToWeek(monthPager.getRowIndex());
         super.onResume();
     }
 
