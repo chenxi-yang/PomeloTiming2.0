@@ -124,6 +124,7 @@ public class DisplayMessageActivity extends AppCompatActivity implements View.On
     }
     public void onClick(View v)
     {
+        final Intent intent = new Intent(this, PlanSettingActivity.class); // intent: switch from setting to results showing
         LayoutInflater factory = LayoutInflater.from(this);
         final View textEntryView = factory.inflate(R.layout.layoutdialog, null);
 
@@ -229,7 +230,12 @@ public class DisplayMessageActivity extends AppCompatActivity implements View.On
                                 List<Plan> namelist = db.getPlanListByDay(currentDate);
 
                                 adapter.ChangeData(namelist);
+<<<<<<< HEAD
                                 setAlarmClock(st_startTime);
+=======
+
+                                startActivity(intent);
+>>>>>>> 1b0e1225b3f92011bd22ca1142bf2965e409a425
                             }
                         })
                 .setNegativeButton("Cancel",

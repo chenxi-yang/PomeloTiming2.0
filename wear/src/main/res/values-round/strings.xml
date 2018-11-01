@@ -1,3 +1,7 @@
 <resources>
     <string name="hello_world">Hello Round World!</string>
+    <string name="state1">Resting</string>
+    <string name="state2">Working</string>
+    <string name="statename">Current Status</string>
+    <string name="state">Working---------20%+</string>
 </resources>

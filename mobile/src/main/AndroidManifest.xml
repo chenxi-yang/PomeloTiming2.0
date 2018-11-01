@@ -32,6 +32,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
+<<<<<<< HEAD
+=======
+        <service android:name=".DataLayerListenerServicePhone">
+            <intent-filter>
+                <action android:name="com.google.android.gms.wearable.BIND_LISTERNER"/>
+            </intent-filter>
+        </service>
+        <meta-data android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version"/>
+>>>>>>> 1b0e1225b3f92011bd22ca1142bf2965e409a425
     </application>
 
 </manifest>
