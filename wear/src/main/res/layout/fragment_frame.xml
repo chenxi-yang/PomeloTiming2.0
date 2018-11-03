@@ -30,7 +30,7 @@
                     android:fontFamily="sans-serif-light"
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
-                    android:text="@string/state"
+                    android:text="@string/state1"
                     android:textColor="@color/black"
                     android:textSize="14sp"/>
             </LinearLayout>

@@ -6,11 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <Button
         android:id="@+id/send_message"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="0dp"
         android:onClick="onSendMsg"
         android:text="@string/send_message"
         app:layout_constraintEnd_toEndOf="parent"

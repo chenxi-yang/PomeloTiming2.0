@@ -16,7 +16,7 @@ import com.google.android.gms.wearable.DataMap;
 import com.google.android.gms.wearable.PutDataMapRequest;
 import com.google.android.gms.wearable.Wearable;
 
-class PlanSettingActivity extends AppCompatActivity {
+public class PlanSettingActivity extends AppCompatActivity {
 
     public static final String MSG_PHONE2WATCH_PATH = "/PHONE2WATCH";
     private GoogleApiClient mGoogleApiClient;

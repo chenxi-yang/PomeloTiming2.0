@@ -3,6 +3,7 @@ package com.example.cxyang.pomelotiming;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.TextViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -56,21 +57,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     public static int USERID;
 
     private static final String COUNT_KEY = "com.example.key.count";
-    private DataClient mDataClient;
-    private int count = 0;
 
     private SQLiteDatabase db;
 
     private GoogleApiClient mGoogleApiClient;
-
-
-    // Create a data map and put data in it
-    private void increaseCounter() {
-        PutDataMapRequest putDataMapReq = PutDataMapRequest.create("/data-item-received");
-        putDataMapReq.getDataMap().putInt(COUNT_KEY, count++);
-        PutDataRequest putDataReq = putDataMapReq.asPutDataRequest();
-        Task<DataItem> putDataTask = mDataClient.putDataItem(putDataReq);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,6 +126,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         Intent intent = new Intent(this, DisplayMessageActivity.class);
         intent.putExtra(EXTRA_MESSAGE, username);
         startActivity(intent);
+
+        //TEST
+//        Intent intent = new Intent(this, PlanSettingActivity.class);
+//        intent.putExtra(EXTRA_MESSAGE, username);
+//        startActivity(intent);
     }
 
     @Override

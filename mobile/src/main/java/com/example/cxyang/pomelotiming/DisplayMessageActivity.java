@@ -201,7 +201,7 @@ public class DisplayMessageActivity extends AppCompatActivity implements View.On
                                 String st_startTime = getTime(start_date.getText().toString(), start_time.getText().toString());
                                 String st_endTime = getTime(end_date.getText().toString(), end_time.getText().toString());
 
-        /*                        HashMap<String, String> params = new HashMap<String, String>();
+        /*                      HashMap<String, String> params = new HashMap<String, String>();
                                 params.put("start_time", st_startTime);
                                 params.put("end_time", st_endTime);
                                 params.put("plan_name", st_planName);
@@ -230,12 +230,9 @@ public class DisplayMessageActivity extends AppCompatActivity implements View.On
                                 List<Plan> namelist = db.getPlanListByDay(currentDate);
 
                                 adapter.ChangeData(namelist);
-<<<<<<< HEAD
                                 setAlarmClock(st_startTime);
-=======
 
-                                startActivity(intent);
->>>>>>> 1b0e1225b3f92011bd22ca1142bf2965e409a425
+                                //startActivity(intent);
                             }
                         })
                 .setNegativeButton("Cancel",

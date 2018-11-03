@@ -25,6 +25,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".DisplayMessageActivity"
                   android:parentActivityName=".MainActivity">
 
@@ -32,8 +33,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-<<<<<<< HEAD
-=======
+
+        <activity android:name=".PlanSettingActivity"
+            android:parentActivityName=".MainActivity">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+
         <service android:name=".DataLayerListenerServicePhone">
             <intent-filter>
                 <action android:name="com.google.android.gms.wearable.BIND_LISTERNER"/>
@@ -41,7 +49,6 @@
         </service>
         <meta-data android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version"/>
->>>>>>> 1b0e1225b3f92011bd22ca1142bf2965e409a425
     </application>
 
 </manifest>
