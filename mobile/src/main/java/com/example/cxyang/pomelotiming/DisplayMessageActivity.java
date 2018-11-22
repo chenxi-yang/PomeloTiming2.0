@@ -122,84 +122,65 @@ public class DisplayMessageActivity extends AppCompatActivity implements View.On
 
         return mDatas;
     }
+    private void setAlarmClock(String date, String time) {
+        Intent intent = new Intent(DisplayMessageActivity.this, AlarmActivity.class);
+
+        java.util.Calendar calendar = java.util.Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+
+        java.util.Calendar alarm_time = java.util.Calendar.getInstance();
+
+        int year = Integer.parseInt(date.substring(0, 4));
+        int month = Integer.parseInt(date.substring(5, 7));
+        int day = Integer.parseInt(date.substring(8, 10));
+        int hour = 0;
+        int minute = 0;
+        if (time.charAt(2) == ':') {
+            hour = Integer.parseInt(time.substring(0, 2));
+            if (time.length() == 5)
+                minute = Integer.parseInt(time.substring(3, 5));
+            else
+                minute = Integer.parseInt(time.substring(3, 4));
+        } else {
+            hour = Integer.parseInt(time.substring(0, 1));
+            if (time.length() == 4)
+                minute = Integer.parseInt(time.substring(2, 4));
+            else
+                minute = Integer.parseInt(time.substring(2, 3));
+        }
+
+
+        /*System.out.println(year);
+        System.out.println(month);
+        System.out.println(day);
+        System.out.println(hour);
+        System.out.println(minute);*/
+
+        alarm_time.set(year, month - 1, day, hour, minute, 0);
+
+        AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+        PendingIntent pi = PendingIntent.getBroadcast(context, 0, intent, 0);
+
+        long tt = alarm_time.getTimeInMillis();//System.currentTimeMillis();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+            am.setExact(AlarmManager.RTC_WAKEUP, tt, pi);
+        else
+            am.set(AlarmManager.RTC_WAKEUP, tt, pi);
+    }
     public void onClick(View v)
     {
-        final Intent intent = new Intent(this, PlanSettingActivity.class); // intent: switch from setting to results showing
-        LayoutInflater factory = LayoutInflater.from(this);
-        final View textEntryView = factory.inflate(R.layout.layoutdialog, null);
+        Intent it = new Intent(DisplayMessageActivity.this, EditActivity.class);
+        startActivityForResult(it, 1);
+    }
+    protected void onActivityResult(int requestCode, int resultCode, Intent it)
+    {
+        if (resultCode == RESULT_OK) {
 
-        AlertDialog dlg = new AlertDialog.Builder(this)
-                .setTitle("New Plan")
-                .setView(textEntryView)
-                .setPositiveButton("OK",
-                        new DialogInterface.OnClickListener() {
-                            public String getTime(String date, String time) {
-                                String ret = "";
-                                int i;
-                                // Change Date to TimeStamp
-                                for (i = 0; i < 4; i ++) ret = ret + date.charAt(i);
-                                if (date.charAt(6) == '/' || date.charAt(6) == '.') {
-                                    ret = ret + "0" + date.charAt(5);
-                                    if (date.length() == 8)
-                                        ret = ret + "0" + date.charAt(7);
-                                    else ret = ret + date.charAt(7) + date.charAt(8);
-                                } else {
-                                    ret = ret + date.charAt(5) + date.charAt(6);
-                                    if (date.length() == 9)
-                                        ret = ret + "0" + date.charAt(8);
-                                    else ret = ret + date.charAt(8) + date.charAt(9);
-                                }
-                                // Change Time to TimeStamp
-                                if (time.charAt(1) == ':' || date.charAt(1) == '.') {
-                                    ret = ret + "0" + time.charAt(0);
-                                    if (time.length() == 3)
-                                        ret = ret + "0" + time.charAt(2);
-                                    else ret = ret + time.charAt(2) + time.charAt(3);
-                                } else {
-                                    ret = ret + time.charAt(0) + time.charAt(1);
-                                    if (time.length() == 4)
-                                        ret = ret + "0" + time.charAt(3);
-                                    else ret = ret + time.charAt(3) + time.charAt(4);
-                                }
-                                return ret;
-                            }
-                            private void setAlarmClock(String time) {
-                                Intent intent = new Intent(DisplayMessageActivity.this, AlarmActivity.class);
+            String start_date = it.getStringExtra("start_date");
+            String start_time = it.getStringExtra("start_time");
+            String end_time = it.getStringExtra("end_time");
+            String planName = it.getStringExtra("plan_name");
 
-                                java.util.Calendar calendar = java.util.Calendar.getInstance();
-                                calendar.setTimeInMillis(System.currentTimeMillis());
-
-                                java.util.Calendar alarm_time = java.util.Calendar.getInstance();
-
-                                int year = Integer.parseInt(time.substring(0, 4));
-                                int month = Integer.parseInt(time.substring(4, 6));
-                                int day = Integer.parseInt(time.substring(6, 8));
-                                int hour = Integer.parseInt(time.substring(8, 10));
-                                int minute = Integer.parseInt(time.substring(10, 12));
-
-                                alarm_time.set(year, month - 1, day, hour, minute);
-
-                                AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
-                                PendingIntent pi = PendingIntent.getBroadcast(context, 0, intent, 0);
-
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
-                                    am.setExact(AlarmManager.RTC_WAKEUP, alarm_time.getTimeInMillis(), pi);
-                                else
-                                    am.set(AlarmManager.RTC_WAKEUP, alarm_time.getTimeInMillis(), pi);
-
-                            }
-                            
-                            public void onClick(DialogInterface dialog, int whichButton) {
-
-                                String st_planName = ((EditText) textEntryView.findViewById(R.id.text_planname)).getText().toString();
-
-                                EditText start_date = textEntryView.findViewById(R.id.startdate);
-                                EditText end_date = textEntryView.findViewById(R.id.enddate);
-                                EditText start_time = textEntryView.findViewById(R.id.starttime);
-                                EditText end_time = textEntryView.findViewById(R.id.endtime);
-
-                                String st_startTime = getTime(start_date.getText().toString(), start_time.getText().toString());
-                                String st_endTime = getTime(end_date.getText().toString(), end_time.getText().toString());
 
         /*                      HashMap<String, String> params = new HashMap<String, String>();
                                 params.put("start_time", st_startTime);
@@ -224,24 +205,14 @@ public class DisplayMessageActivity extends AppCompatActivity implements View.On
                                 });
                                 MySingleton.getInstance(DisplayMessageActivity.this).addToRequestQueue(jsonObjectRequest);*/
 
-                                Plan newplan = new Plan(start_date.getText().toString(), start_time.getText().toString(), end_time.getText().toString(), st_planName);
+            Plan newplan = new Plan(start_date, start_time, end_time, planName);
+            db.AddPlan(newplan);
+            List<Plan> namelist = db.getPlanListByDay(currentDate);
 
-                                db.AddPlan(newplan);
-                                List<Plan> namelist = db.getPlanListByDay(currentDate);
+            adapter.ChangeData(namelist);
 
-                                adapter.ChangeData(namelist);
-                                setAlarmClock(st_startTime);
-
-                                //startActivity(intent);
-                            }
-                        })
-                .setNegativeButton("Cancel",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {}
-                        })
-                .create();
-        dlg.show();
+            setAlarmClock(start_date, start_time);
+        }
     }
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {

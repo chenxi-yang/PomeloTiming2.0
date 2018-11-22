@@ -28,11 +28,10 @@ public class AlarmActivity extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        onSendMsg(workingStatus);
+        //onSendMsg(workingStatus);
 
         Toast.makeText(context, "You Have a Plan to be Started Soon !!!", Toast.LENGTH_SHORT).show();
-        //Intent i = new Intent(context, LongRunningService.class);
-        //context.startService(i);
+        System.out.println("Alarm!");
     }
 
     public void onSendMsg(Double msg){
