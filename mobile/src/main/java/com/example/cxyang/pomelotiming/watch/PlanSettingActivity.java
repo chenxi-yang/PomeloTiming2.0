@@ -1,4 +1,4 @@
-package com.example.cxyang.pomelotiming;
+package com.example.cxyang.pomelotiming.watch;
 /*
 * First used for testing data transformation
 * Function:
@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.example.cxyang.pomelotiming.R;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.DataMap;
 import com.google.android.gms.wearable.PutDataMapRequest;
@@ -25,7 +26,6 @@ public class PlanSettingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_planset);
-
     }
     public void onSendMsg(View view){
         PutDataMapRequest putRequest = PutDataMapRequest.create(MSG_PHONE2WATCH_PATH);

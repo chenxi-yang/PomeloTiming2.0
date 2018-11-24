@@ -1,4 +1,4 @@
-package com.example.cxyang.pomelotiming;
+package com.example.cxyang.pomelotiming.main;
 
 import android.content.Context;
 import android.graphics.Bitmap;

@@ -1,4 +1,4 @@
-package com.example.cxyang.pomelotiming;
+package com.example.cxyang.pomelotiming.Plan;
 
 public class Plan {
     public String start_time;

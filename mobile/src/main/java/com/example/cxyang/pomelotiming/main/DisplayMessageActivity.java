@@ -1,36 +1,29 @@
-package com.example.cxyang.pomelotiming;
+package com.example.cxyang.pomelotiming.main;
 
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.IntentFilter;
 import android.os.Build;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.view.ViewPager;
 
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.widget.EditText;
 
 import android.widget.TextView;
 import android.view.View;
-import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.cxyang.pomelotiming.alarm.AlarmActivity;
+import com.example.cxyang.pomelotiming.calendar.CustomDayView;
+import com.example.cxyang.pomelotiming.db.DataBaseServer;
+import com.example.cxyang.pomelotiming.Plan.EditActivity;
+import com.example.cxyang.pomelotiming.Plan.Plan;
+import com.example.cxyang.pomelotiming.R;
 import com.ldf.calendar.Utils;
 import com.ldf.calendar.component.CalendarAttr;
 import com.ldf.calendar.component.CalendarViewAdapter;
@@ -38,8 +31,6 @@ import com.ldf.calendar.interf.OnSelectDateListener;
 import com.ldf.calendar.model.CalendarDate;
 import com.ldf.calendar.view.Calendar;
 import com.ldf.calendar.view.MonthPager;
-
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -123,6 +114,8 @@ public class DisplayMessageActivity extends AppCompatActivity implements View.On
         return mDatas;
     }
     private void setAlarmClock(String date, String time) {
+        //System.out.println(date);
+        //System.out.println("time: " + time);
         Intent intent = new Intent(DisplayMessageActivity.this, AlarmActivity.class);
 
         java.util.Calendar calendar = java.util.Calendar.getInstance();
@@ -178,6 +171,7 @@ public class DisplayMessageActivity extends AppCompatActivity implements View.On
 
             String start_date = it.getStringExtra("start_date");
             String start_time = it.getStringExtra("start_time");
+
             String end_time = it.getStringExtra("end_time");
             String planName = it.getStringExtra("plan_name");
 

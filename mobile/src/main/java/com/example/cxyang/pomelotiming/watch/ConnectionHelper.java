@@ -1,4 +1,4 @@
-package com.example.cxyang.pomelotiming;
+package com.example.cxyang.pomelotiming.watch;
 
 public class ConnectionHelper {
     public Double msg;

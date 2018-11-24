@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp">
+
+    <EditTextPreference
+        android:dialogTitle="Please Input Your Name"
+        android:key="name_preference"
+        android:summary="Input your plan name"
+        android:title="Plan Name" />
+
+    <com.example.cxyang.pomelotiming.Plan.DatePickerPreference
+        android:title="Date"
+        android:key="date_preference"
+        android:summary="Setting date of your plan" />
+
+    <com.example.cxyang.pomelotiming.Plan.TimePickerPreference
+        android:title="Start Time"
+        android:key="sttime_preference"
+        android:summary="Setting start time of your plan" />
+
+    <com.example.cxyang.pomelotiming.Plan.TimePickerPreference
+        android:title="End Time"
+        android:key="edtime_preference"
+        android:summary="Setting end time of your plan" />
+
+</PreferenceScreen>

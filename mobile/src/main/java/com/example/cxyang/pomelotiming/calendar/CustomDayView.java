@@ -1,4 +1,4 @@
-package com.example.cxyang.pomelotiming;
+package com.example.cxyang.pomelotiming.calendar;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.cxyang.pomelotiming.R;
 import com.ldf.calendar.Utils;
 import com.ldf.calendar.component.State;
 import com.ldf.calendar.interf.IDayRenderer;

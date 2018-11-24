@@ -1,4 +1,4 @@
-package com.example.cxyang.pomelotiming;
+package com.example.cxyang.pomelotiming.watch;
 
 class WatchConnection {
     private ConnectionHelper connectionHelper = new ConnectionHelper();

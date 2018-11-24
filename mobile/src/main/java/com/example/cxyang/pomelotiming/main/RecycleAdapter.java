@@ -1,13 +1,15 @@
-package com.example.cxyang.pomelotiming;
+package com.example.cxyang.pomelotiming.main;
 
 import android.content.Context;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.example.cxyang.pomelotiming.db.DataBaseServer;
+import com.example.cxyang.pomelotiming.Plan.Plan;
+import com.example.cxyang.pomelotiming.R;
 
 import java.util.List;
 

@@ -1,11 +1,11 @@
-package com.example.cxyang.pomelotiming;
+package com.example.cxyang.pomelotiming.db;
 
-import android.app.Service;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import com.example.cxyang.pomelotiming.main.MainActivity;
 import com.google.android.gms.common.data.FreezableUtils;
 import com.google.android.gms.wearable.DataEvent;
 import com.google.android.gms.wearable.DataEventBuffer;

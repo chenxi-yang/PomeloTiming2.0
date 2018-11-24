@@ -1,10 +1,12 @@
-package com.example.cxyang.pomelotiming;
+package com.example.cxyang.pomelotiming.db;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.example.cxyang.pomelotiming.watch.MySQLHelper;
+import com.example.cxyang.pomelotiming.Plan.Plan;
 import com.ldf.calendar.model.CalendarDate;
 
 import java.util.ArrayList;

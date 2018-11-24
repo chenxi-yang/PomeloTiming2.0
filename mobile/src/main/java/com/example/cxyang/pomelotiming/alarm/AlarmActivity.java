@@ -1,4 +1,4 @@
-package com.example.cxyang.pomelotiming;
+package com.example.cxyang.pomelotiming.alarm;
 
 import android.app.Notification;
 import android.app.NotificationManager;
