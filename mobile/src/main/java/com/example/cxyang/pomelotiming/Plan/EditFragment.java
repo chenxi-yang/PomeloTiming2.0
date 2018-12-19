@@ -18,6 +18,7 @@ public class EditFragment extends PreferenceFragment {
         addPreferencesFromResource(R.xml.edit);
 
         EditTextPreference nm = (EditTextPreference) findPreference("name_preference");
+        nm.setText("");
         nm.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {

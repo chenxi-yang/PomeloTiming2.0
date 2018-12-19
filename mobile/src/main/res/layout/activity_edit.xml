@@ -20,6 +20,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
+            android:layout_marginTop="50dp"
+            android:layout_marginLeft="30dp"
             android:src="@drawable/save"
             app:borderWidth="0.0dip"
             app:elevation="5.0dip"

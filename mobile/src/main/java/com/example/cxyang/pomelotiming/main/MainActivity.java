@@ -1,6 +1,9 @@
 package com.example.cxyang.pomelotiming.main;
 
+import android.app.usage.UsageStats;
+import android.app.usage.UsageStatsManager;
 import android.content.Intent;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +18,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.cxyang.pomelotiming.R;
+import com.example.cxyang.pomelotiming.db.DataBaseServer;
+import com.example.cxyang.pomelotiming.timedata.OneTimeDetails;
+import com.example.cxyang.pomelotiming.timedata.PackageInfo;
+import com.example.cxyang.pomelotiming.timedata.UserTimeDataManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.DataApi;
@@ -28,7 +35,14 @@ import android.database.sqlite.SQLiteDatabase;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
+
+import static java.lang.Integer.min;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, DataApi.DataListener, MessageApi.MessageListener {
     public static final String serverHost = "http://45.32.5.192:80";
@@ -45,6 +59,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     private GoogleApiClient mGoogleApiClient;
 
+    private static UserTimeDataManager mUseTimeDataManager;
+    private ArrayList<PackageInfo> PackageInfoList;
+    private ArrayList<OneTimeDetails> mOneTimeDetailInfoList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +75,54 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .build();
+
+        DataRecord();
+    }
+
+    private DataBaseServer localdb;
+
+    public void DataRecord() {
+        mUseTimeDataManager = UserTimeDataManager.getInstance(this);
+        mUseTimeDataManager.refreshData(0);
+
+        localdb = new DataBaseServer(this, "plan.db");
+        PackageInfoList = mUseTimeDataManager.getmPackageInfoListOrderByTime();
+        /*
+            应用程序的list
+        */
+        System.out.print("Size: "); System.out.println(PackageInfoList.size());
+        if (PackageInfoList.size() == 0) {
+            Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
+            startActivity(intent);
+        }
+        for (int i = 0; i < PackageInfoList.size(); i ++) {
+            String pkg = PackageInfoList.get(i).getmPackageName();
+            //System.out.print("Package Name: ");
+            //System.out.println(pkg);
+
+            //System.out.print("Used Time: ");
+            //System.out.println(PackageInfoList.get(i).getmUsedTime());
+
+            //System.out.print("Count: ");
+            //System.out.println(PackageInfoList.get(i).getmUsedCount());
+
+
+            /*
+                每一个应用的具体信息
+             */
+            mOneTimeDetailInfoList = mUseTimeDataManager.getPkgOneTimeDetailList(pkg);
+            for (int j = 0; j < mOneTimeDetailInfoList.size(); j ++) {
+                String startTime = mOneTimeDetailInfoList.get(j).getStartTime();
+                String endTime = mOneTimeDetailInfoList.get(j).getStopTime();
+                long totalTime = mOneTimeDetailInfoList.get(j).getUseTime();
+
+                //System.out.print("---Start Time: "); System.out.println(startTime);
+                //System.out.print("---End Time: "); System.out.println(endTime);
+                //System.out.print("---Total Time: "); System.out.println(totalTime);
+
+                localdb.addRecord(pkg, startTime, endTime, totalTime);
+            }
+        }
     }
 
     /**

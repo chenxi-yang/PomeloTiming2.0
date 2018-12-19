@@ -130,26 +130,18 @@ public class DisplayMessageActivity extends AppCompatActivity implements View.On
         int minute = 0;
         if (time.charAt(2) == ':') {
             hour = Integer.parseInt(time.substring(0, 2));
-            if (time.length() == 5)
-                minute = Integer.parseInt(time.substring(3, 5));
-            else
-                minute = Integer.parseInt(time.substring(3, 4));
+            if (time.length() == 5) minute = Integer.parseInt(time.substring(3, 5));
+            else minute = Integer.parseInt(time.substring(3, 4));
         } else {
             hour = Integer.parseInt(time.substring(0, 1));
-            if (time.length() == 4)
-                minute = Integer.parseInt(time.substring(2, 4));
-            else
-                minute = Integer.parseInt(time.substring(2, 3));
+            if (time.length() == 4) minute = Integer.parseInt(time.substring(2, 4));
+            else minute = Integer.parseInt(time.substring(2, 3));
         }
 
-
-        /*System.out.println(year);
-        System.out.println(month);
-        System.out.println(day);
-        System.out.println(hour);
-        System.out.println(minute);*/
-
         alarm_time.set(year, month - 1, day, hour, minute, 0);
+
+        intent.putExtra("start_date", date);
+        intent.putExtra("start_time", time);
 
         AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
         PendingIntent pi = PendingIntent.getBroadcast(context, 0, intent, 0);

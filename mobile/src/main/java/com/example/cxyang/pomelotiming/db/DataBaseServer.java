@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.example.cxyang.pomelotiming.watch.MySQLHelper;
 import com.example.cxyang.pomelotiming.Plan.Plan;
 import com.ldf.calendar.model.CalendarDate;
 
@@ -19,7 +18,27 @@ public class DataBaseServer {
     public DataBaseServer(Context context, String name) {
         sqlHelper = new MySQLHelper(context, name);
     }
+    public void addRecord(String packageName, String startTime, String endTime, long totalTime) {
+        SQLiteDatabase db = this.sqlHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("package_name", packageName);
+        values.put("start_time", startTime);
+        values.put("end_time", endTime);
+        values.put("total_time", totalTime);
 
+        db.insert("record", null, values);
+        db.close();
+    }
+    public int findPlan(String start_date, String start_time) {
+        SQLiteDatabase localSQLiteDatabase = this.sqlHelper.getWritableDatabase();
+        Cursor localCursor = localSQLiteDatabase.rawQuery("select * from planList  " +
+                "where date = ? and start_time = ? ", new String[]{start_date, start_time});
+        int cnt = 0;
+        while (localCursor.moveToNext())
+            cnt ++;
+        localSQLiteDatabase.close();
+        return cnt;
+    }
     public List<Plan> getPlanListByDay(CalendarDate day) {
         List<Plan> localArrayList=new ArrayList<Plan>();
         SQLiteDatabase localSQLiteDatabase = this.sqlHelper.getWritableDatabase();

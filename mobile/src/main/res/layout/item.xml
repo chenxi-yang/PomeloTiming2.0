@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/news_summary_card_view"
-    android:layout_margin="10dp"
+    android:layout_margin="7dp"
     app:cardBackgroundColor="#ffffff"
     app:cardElevation="2dp">
     <!--app:cardCornerRadius="2dp"-->
@@ -18,9 +18,11 @@
             android:id="@+id/id_num"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:gravity="left"
             android:textColor="#444444"
-            android:textSize="18sp"
+            android:textSize="20sp"
             tools:text="11111111111111" />
 
         <LinearLayout
@@ -32,10 +34,10 @@
                 android:id="@+id/id_duration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
+                android:layout_marginLeft="30dp"
                 android:gravity="left"
-                android:textColor="#444444"
-                android:textSize="16sp"
+                android:textColor="#969696"
+                android:textSize="18sp"
                 tools:text="1111" />
             <View
                 android:layout_width="0dp"

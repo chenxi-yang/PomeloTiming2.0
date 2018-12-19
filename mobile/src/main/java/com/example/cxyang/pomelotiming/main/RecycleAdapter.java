@@ -38,7 +38,7 @@ class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.MyViewHolder> {
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         String txt = list.get(position).get_name();
         holder.tv.setText(txt);
-        String time_txt = "Duration: " + list.get(position).get_start_time() + " ~ " + list.get(position).get_end_time();
+        String time_txt = list.get(position).get_start_time() + " —— " + list.get(position).get_end_time();
         holder.tv_duration.setText(time_txt);
         holder.tv_delete.setOnClickListener(new View.OnClickListener() {
             @Override
