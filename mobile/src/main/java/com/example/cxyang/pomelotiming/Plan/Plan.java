@@ -5,6 +5,7 @@ public class Plan {
     public String end_time;
     public String name;
     public String date;
+    public int complete = 0;
 
     public Plan() {
 
@@ -14,6 +15,7 @@ public class Plan {
         this.start_time = start_time;
         this.end_time = end_time;
         this.name = name;
+        this.complete = 0;
     }
     public String get_start_time() {
         return start_time;

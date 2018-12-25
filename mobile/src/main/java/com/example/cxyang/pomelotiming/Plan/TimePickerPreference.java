@@ -53,7 +53,7 @@ public class TimePickerPreference extends DialogPreference {
         timePicker.setDrawingCacheEnabled(true);
 
         timePicker.setCurrentHour(calendar.get(Calendar.HOUR_OF_DAY));
-        timePicker.setCurrentMinute(Calendar.MINUTE);
+        timePicker.setCurrentMinute(0);
     }
 
     private TimePicker timePicker;

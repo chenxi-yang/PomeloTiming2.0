@@ -15,6 +15,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.widget.TextView;
 import android.view.View;
 
@@ -101,6 +102,11 @@ public class DisplayMessageActivity extends AppCompatActivity implements View.On
         adapter = new RecycleAdapter(this, nameList, db);
         rvToDoList.setAdapter(adapter);
         rvToDoList.setItemAnimator(new DefaultItemAnimator());
+
+        MyItemTouchHelper touchCallBack = new MyItemTouchHelper();
+        touchCallBack.setOnItemTouchListener(adapter);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(touchCallBack);
+        itemTouchHelper.attachToRecyclerView(rvToDoList);
 
         initCalendarView();
         initToolbarClickListener();
