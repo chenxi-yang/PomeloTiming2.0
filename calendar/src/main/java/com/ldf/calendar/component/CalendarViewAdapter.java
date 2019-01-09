@@ -74,14 +74,14 @@ public class CalendarViewAdapter extends PagerAdapter {
 
     @Override
     public void setPrimaryItem(ViewGroup container, int position, Object object) {
-        Log.e("ldf", "setPrimaryItem");
+        //Log.e("ldf", "setPrimaryItem");
         super.setPrimaryItem(container, position, object);
         this.currentPosition = position;
     }
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        Log.e("ldf", "instantiateItem");
+        //Log.e("ldf", "instantiateItem");
         if (position < 2) {
             return null;
         }

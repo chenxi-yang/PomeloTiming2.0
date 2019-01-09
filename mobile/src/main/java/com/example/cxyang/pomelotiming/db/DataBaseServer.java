@@ -39,11 +39,19 @@ public class DataBaseServer {
         localSQLiteDatabase.close();
         return cnt;
     }
+
+    private String ChangeFormat(CalendarDate date) {
+        return String.format("%d/%02d/%02d", date.getYear(), date.getMonth(), date.getDay());
+    }
+
     public List<Plan> getPlanListByDay(CalendarDate day) {
+
+        String sd = ChangeFormat(day);
+
         List<Plan> localArrayList=new ArrayList<Plan>();
         SQLiteDatabase localSQLiteDatabase = this.sqlHelper.getWritableDatabase();
-        Cursor localCursor = localSQLiteDatabase.rawQuery("select start_time, end_time, name from planList  " +
-                "where date = ? order by start_time", new String[]{day.toString()});
+        Cursor localCursor = localSQLiteDatabase.rawQuery("select start_time, end_time, name, done from planList  " +
+                "where date = ? order by start_time", new String[]{sd});
 
         while (localCursor.moveToNext())
         {
@@ -51,16 +59,26 @@ public class DataBaseServer {
             temp.set_start_time(localCursor.getString(localCursor.getColumnIndex("start_time")));
             temp.set_end_time(localCursor.getString(localCursor.getColumnIndex("end_time")));
             temp.set_name(localCursor.getString(localCursor.getColumnIndex("name")));
-            temp.set_date(day.toString());
+            temp.set_flag(localCursor.getInt(localCursor.getColumnIndex("done")));
+            temp.set_date(sd);
             localArrayList.add(temp);
         }
         localSQLiteDatabase.close();
         return localArrayList;
     }
 
+    public void ChangeDoneFlag(String name, String date) {
+        SQLiteDatabase db = this.sqlHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("done", 1);
+        db.update("planList", values, "name = ? and date = ?", new String[]{name, date});
+        db.close();
+    }
+
     public void AddPlan(Plan p) {
         SQLiteDatabase db = this.sqlHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
+
         values.put("date", p.get_date());
         values.put("start_time", p.get_start_time());
         values.put("end_time", p.get_end_time());

@@ -178,7 +178,7 @@ public class MonthPagerBehavior extends CoordinatorLayout.Behavior<MonthPager> {
             }
 
             child.offsetTopAndBottom(dy);
-            Log.e("ldf", "onDependentViewChanged = " + dy);
+            //Log.e("ldf", "onDependentViewChanged = " + dy);
 
         }
 

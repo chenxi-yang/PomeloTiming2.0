@@ -32,4 +32,5 @@ public class Plan {
     public void set_end_time(String end_time) { this.end_time = end_time; }
     public void set_date(String date) { this.date = date; }
     public void set_name(String name) { this.name = name; }
+    public void set_flag(int flag) { this.complete = flag; }
 }

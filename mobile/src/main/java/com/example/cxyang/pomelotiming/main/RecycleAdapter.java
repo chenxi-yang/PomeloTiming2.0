@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.cxyang.pomelotiming.db.DataBaseServer;
@@ -15,6 +16,8 @@ import com.example.cxyang.pomelotiming.R;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import static java.lang.Integer.parseInt;
 
 /**
  * Created by ldf on 17/6/14.
@@ -64,13 +67,29 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.MyViewHo
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         String txt = list.get(position).get_name();
         holder.tv.setText(txt);
+        holder.toolsid.setText(String.valueOf(position));
+
         String time_txt = list.get(position).get_start_time() + " —— " + list.get(position).get_end_time();
 
         holder.tv_duration.setText(time_txt);
+        System.out.println(list.get(position).complete);
+        System.out.println(list.get(position).name);
 
-        holder.tv_img.setOnClickListener(new View.OnClickListener() {
+        if (list.get(position).complete == 1)
+            holder.tv_img.setImageDrawable(context.getResources().getDrawable(R.drawable.checkcircle));
+        else
+            holder.tv_img.setImageDrawable(context.getResources().getDrawable(R.drawable.timecircle));
+
+        holder.itemlyout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                TextView tt = (TextView) v.findViewById(R.id.id_tooltext);
+                int id = Integer.parseInt(tt.getText().toString());
+
+                //System.out.println(id);
+                list.get(id).complete = 1;
+                db.ChangeDoneFlag(list.get(id).name, list.get(id).get_date());
+
                 ImageView iiv = v.findViewById(R.id.img_complete);
                 iiv.setImageDrawable(context.getResources().getDrawable(R.drawable.checkcircle));
             }
@@ -83,10 +102,13 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.MyViewHo
     //  更新数据
     public void ChangeData(List<Plan> newlist) {
 //      在list中添加数据，并通知条目加入一条
+        System.out.println("I need to change data");
+        System.out.println(newlist.size());
         list.clear();
         for (int i = 0; i < newlist.size(); i ++)
             list.add(i, newlist.get(i));
 
+        System.out.println("I need to change data");
         notifyDataSetChanged();
     }
     //  删除数据
@@ -101,15 +123,18 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.MyViewHo
      * ViewHolder的类，用于缓存控件
      */
     class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView tv, tv_duration;
+        TextView tv, tv_duration, toolsid;
         ImageView tv_img;
+        LinearLayout itemlyout;
         //因为删除有可能会删除中间条目，然后会造成角标越界，所以必须整体刷新一下！
         public MyViewHolder(View view) {
             super(view);
+
+            itemlyout = (LinearLayout) view.findViewById(R.id.itemall);
             tv = (TextView) view.findViewById(R.id.id_num);
+            toolsid = (TextView) view.findViewById(R.id.id_tooltext);
             tv_duration = (TextView) view.findViewById(R.id.id_duration);
             tv_img = (ImageView) view.findViewById(R.id.img_complete);
-            iv = (ImageView) view.findViewById(R.id.img_complete);
         }
     }
 }

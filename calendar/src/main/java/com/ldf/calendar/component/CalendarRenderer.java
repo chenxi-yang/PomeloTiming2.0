@@ -138,7 +138,7 @@ public class CalendarRenderer {
                 seedDate.year,
                 seedDate.month,
                 attr.getWeekArrayType());
-        Log.e("ldf","firstDayPosition = " + firstDayPosition);
+        //Log.e("ldf","firstDayPosition = " + firstDayPosition);
 
         int day = 0;
         for (int row = 0; row < Const.TOTAL_ROW; row++) {

@@ -114,7 +114,6 @@ public class UserTimeDataManager {
                 }
             }
         }
-
         return mPackageInfoList;
     }
 
@@ -130,7 +129,6 @@ public class UserTimeDataManager {
                 }
             }
         }
-
         return mPackageInfoList;
     }
 
