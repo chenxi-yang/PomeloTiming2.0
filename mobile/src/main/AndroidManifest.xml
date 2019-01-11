@@ -43,7 +43,21 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".main.MainActivity" />
         </activity>
-        <activity android:name=".Plan.EditActivity"></activity>
+        <activity android:name=".Plan.EditActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".main.DisplayMessageActivity" />
+        </activity>
+        <activity android:name=".main.StatisticActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".main.DisplayMessageActivity" />
+        </activity>
+        <activity android:name=".main.UserTimeDetailActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".main.StatisticActivity" />
+        </activity>
 
         <service android:name=".db.DataLayerListenerServicePhone">
             <intent-filter>

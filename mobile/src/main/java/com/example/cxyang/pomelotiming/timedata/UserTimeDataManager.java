@@ -16,27 +16,23 @@ import java.util.ArrayList;
 
 public class UserTimeDataManager {
 
-    private static UserTimeDataManager               mUseTimeDataManager;
-
+    private static UserTimeDataManager mUseTimeDataManager;
     private Context mContext;
-
-    private int                                     mDayNum;
-    private long                                    mStartTime;
-    private long                                    mEndTime;
+    private int mDayNum;
 
     //记录从系统中读取的数据
     private ArrayList<UsageEvents.Event> mEventList;
-    private ArrayList<UsageEvents.Event>            mEventListChecked;
-    private ArrayList<UsageStats>                   mStatsList;
+    private ArrayList<UsageEvents.Event> mEventListChecked;
+    private ArrayList<UsageStats> mStatsList;
 
     //记录打开一次应用，使用的activity详情
-    private ArrayList<OneTimeDetails>               mOneTimeDetailList = new ArrayList<>();
+    private ArrayList<OneTimeDetails> mOneTimeDetailList = new ArrayList<>();
 
     //记录某一次打开应用的使用情况（查询某一次使用情况的时候，用于界面显示）
-    private OneTimeDetails                          mOneTimeDetails;
+    private OneTimeDetails mOneTimeDetails;
 
     //主界面数据
-    private ArrayList<PackageInfo>               mPackageInfoList = new ArrayList<>();
+    private ArrayList<PackageInfo> mPackageInfoList = new ArrayList<>();
 
 
     public UserTimeDataManager(Context context) {
@@ -263,7 +259,6 @@ public class UserTimeDataManager {
         if("all".equals(pkg)){
             return mOneTimeDetailList;
         }
-
         ArrayList<OneTimeDetails> list = new ArrayList<>();
         if(mOneTimeDetailList != null && mOneTimeDetailList.size() > 0){
             for (int i = 0 ; i < mOneTimeDetailList.size() ; i++ ){

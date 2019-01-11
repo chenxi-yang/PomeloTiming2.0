@@ -16,6 +16,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.view.View;
 
@@ -23,6 +24,7 @@ import com.example.cxyang.pomelotiming.alarm.AlarmActivity;
 import com.example.cxyang.pomelotiming.calendar.CustomDayView;
 import com.example.cxyang.pomelotiming.db.DataBaseServer;
 import com.example.cxyang.pomelotiming.Plan.EditActivity;
+import com.example.cxyang.pomelotiming.main.StatisticActivity;
 import com.example.cxyang.pomelotiming.Plan.Plan;
 import com.example.cxyang.pomelotiming.R;
 import com.ldf.calendar.Utils;
@@ -37,7 +39,7 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DisplayMessageActivity extends AppCompatActivity implements View.OnClickListener {
+public class DisplayMessageActivity extends AppCompatActivity {
 
     //public static final String localHost = "http://localhost:80";
     public static final String serverHost = "http://45.32.5.192:80";
@@ -79,7 +81,22 @@ public class DisplayMessageActivity extends AppCompatActivity implements View.On
         //textView.setText(message);
 
         TextView button = findViewById(R.id.new_plan);
-        button.setOnClickListener(this);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it = new Intent(DisplayMessageActivity.this, EditActivity.class);
+                startActivityForResult(it, 1);
+            }
+        });
+
+        TextView statistic_button = findViewById(R.id.view_statistics);
+        statistic_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it = new Intent(DisplayMessageActivity.this, StatisticActivity.class);
+                startActivityForResult(it, 1);
+            }
+        });
 
         context = this;
         content = findViewById(R.id.content);
@@ -157,11 +174,6 @@ public class DisplayMessageActivity extends AppCompatActivity implements View.On
             am.setExact(AlarmManager.RTC_WAKEUP, tt, pi);
         else
             am.set(AlarmManager.RTC_WAKEUP, tt, pi);
-    }
-    public void onClick(View v)
-    {
-        Intent it = new Intent(DisplayMessageActivity.this, EditActivity.class);
-        startActivityForResult(it, 1);
     }
     protected void onActivityResult(int requestCode, int resultCode, Intent it)
     {
